@@ -1,0 +1,14 @@
+/* Write your code here. */
+.coffee-planner-question-title-container {
+  width: 100%;
+  margin: 10px;
+}
+
+.coffee-planner-question-title {
+  color: #1e293b;
+  font-family: 'Roboto';
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
