@@ -4,14 +4,14 @@ import {Component} from 'react'
 import './index.css'
 
 class QuestionOption extends Component {
-  state = {selectedItem: null}
+  onSelectItem = () => {
+    const {questionOption} = this.props
+    const {id} = questionOption
+    const currentId = id
 
-  onSelectItem = event => {
-    const currentId = parseInt(event.target.id, 10)
+    const {totalQuestionOption, selectedCategory} = this.props
 
-    const {questionOption, selectedCategory} = this.props
-    this.setState({selectedItem: currentId})
-    const currentItemDetails = questionOption.filter(
+    const currentItemDetails = totalQuestionOption.filter(
       eachItem => eachItem.id === currentId,
     )
     const selectedOptionType = currentItemDetails[0].optionTitle
@@ -31,76 +31,37 @@ class QuestionOption extends Component {
   }
 
   render() {
-    const {questionOption} = this.props
-    const {selectedItem} = this.state
+    const {questionOption, selectedOption} = this.props
+    const {optionTitle, description} = questionOption
+
+    const isSelectedOption = selectedOption === optionTitle
+    const listItemClassName = isSelectedOption
+      ? 'coffee-planner-question-option-list-item-selected'
+      : 'coffee-planner-question-option-list-item'
+    const optionTitleClassName = isSelectedOption
+      ? 'coffee-planner-question-option-title-selected'
+      : 'coffee-planner-question-option-title'
+    const imageUrl = isSelectedOption
+      ? 'https://assets.ccbp.in/frontend/react-js/coffee-planner-white-cup-img.png'
+      : 'https://assets.ccbp.in/frontend/react-js/coffee-planner-blue-cup-img.png'
+    const imageAlt = isSelectedOption ? 'white cup' : 'blue cup'
+    const descriptionClassName = isSelectedOption
+      ? 'coffee-planner-question-option-description-selected'
+      : 'coffee-planner-question-option-description'
     return (
-      <ul className="coffee-planner-question-option-list-container">
-        {questionOption.map(eachQuestionOption =>
-          eachQuestionOption.id === selectedItem ? (
-            <li
-              className="coffee-planner-question-option-list-item-selected"
-              key={eachQuestionOption.id}
-              id={eachQuestionOption.id}
-              onClick={this.onSelectItem}
-            >
-              <div
-                className="coffee-planner-question-option-title-container"
-                id={eachQuestionOption.id}
-              >
-                <h1
-                  className="coffee-planner-question-option-title-selected"
-                  id={eachQuestionOption.id}
-                >
-                  {eachQuestionOption.optionTitle}
-                </h1>
-                <img
-                  className="coffee-planner-question-option-cup-image"
-                  src="https://assets.ccbp.in/frontend/react-js/coffee-planner-white-cup-img.png"
-                  alt="blue-cup"
-                  id={eachQuestionOption.id}
-                />
-              </div>
-              <p
-                className="coffee-planner-question-option-description-selected"
-                id={eachQuestionOption.id}
-              >
-                {eachQuestionOption.description}
-              </p>
-            </li>
-          ) : (
-            <li
-              className="coffee-planner-question-option-list-item"
-              key={eachQuestionOption.id}
-              id={eachQuestionOption.id}
-              onClick={this.onSelectItem}
-            >
-              <div
-                className="coffee-planner-question-option-title-container"
-                id={eachQuestionOption.id}
-              >
-                <h1
-                  className="coffee-planner-question-option-title"
-                  id={eachQuestionOption.id}
-                >
-                  {eachQuestionOption.optionTitle}
-                </h1>
-                <img
-                  className="coffee-planner-question-option-cup-image"
-                  src="https://assets.ccbp.in/frontend/react-js/coffee-planner-blue-cup-img.png"
-                  alt="blue-cup"
-                  id={eachQuestionOption.id}
-                />
-              </div>
-              <p
-                className="coffee-planner-question-option-description"
-                id={eachQuestionOption.id}
-              >
-                {eachQuestionOption.description}
-              </p>
-            </li>
-          ),
-        )}
-      </ul>
+      <li className={listItemClassName} onClick={this.onSelectItem}>
+        <button className="question-option-button" type="button">
+          <span className="coffee-planner-question-option-title-container">
+            <span className={optionTitleClassName}>{optionTitle}</span>
+            <img
+              className="coffee-planner-question-option-cup-image"
+              src={imageUrl}
+              alt={imageAlt}
+            />
+          </span>
+          <span className={descriptionClassName}>{description}</span>
+        </button>
+      </li>
     )
   }
 }

@@ -1,13 +1,4 @@
 /* Write your code here. */
-.coffee-planner-question-option-list-container {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
 .coffee-planner-question-option-list-item {
   background-color: #f4f1ea;
   border: none;
@@ -46,6 +37,16 @@
   }
 }
 
+.question-option-button {
+  height: 100%;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
 .coffee-planner-question-option-title-container {
   display: flex;
   justify-content: space-between;
@@ -55,13 +56,17 @@
 .coffee-planner-question-option-title {
   color: #2e353d;
   font-family: 'Roboto';
-  font-size: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .coffee-planner-question-option-title-selected {
   color: #f4f1ea;
   font-family: 'Roboto';
-  font-size: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .coffee-planner-question-option-cup-image {
@@ -73,10 +78,12 @@
   color: #64748b;
   font-family: 'Roboto';
   font-size: 15px;
+  margin-top: 10px;
 }
 
 .coffee-planner-question-option-description-selected {
   color: #f4f1ea;
   font-family: 'Roboto';
   font-size: 15px;
+  margin-top: 10px;
 }

@@ -5,45 +5,39 @@ import './index.css'
 
 import CoffeePlannerQuestion from '../CoffeePlannerQuestion'
 
-import QuestionOption from '../QuestionOption'
-
 class CoffeePlanner extends Component {
   state = {
-    drinkType: false,
-    coffeeType: false,
-    quantity: false,
-    grindType: false,
-    deliverType: false,
     successMessage: false,
     errorMessage: false,
-    drinkOptionType: null,
-    coffeeOptionType: null,
-    quantityOptionType: null,
-    grindOptionType: null,
-    deliverOptionType: null,
+    selectedOptions: ['', '', '', '', ''],
   }
 
   selectedCategory = (name, optionType) => {
-    if (name === 'DRINK_TYPE') {
-      this.setState({drinkType: true, drinkOptionType: optionType})
-    }
-    if (name === 'COFFEE_TYPE') {
-      this.setState({coffeeType: true, coffeeOptionType: optionType})
-    }
-    if (name === 'QUANTITY') {
-      this.setState({quantity: true, quantityOptionType: optionType})
-    }
-    if (name === 'GRIND_TYPE') {
-      this.setState({grindType: true, grindOptionType: optionType})
-    }
-    if (name === 'DELIVER_TYPE') {
-      this.setState({deliverType: true, deliverOptionType: optionType})
-    }
+    const {coffeePlannerData} = this.props
+    const {selectedOptions} = this.state
+    const questionTypeIndex = coffeePlannerData.findIndex(
+      eachData => eachData.questionType === name,
+    )
+    const newSelectedOptions = [...selectedOptions]
+    newSelectedOptions[questionTypeIndex] = optionType
+    this.setState({selectedOptions: [...newSelectedOptions]})
+  }
+
+  getSelectedOption = questionType => {
+    const {selectedOptions} = this.state
+    const {coffeePlannerData} = this.props
+    const questionTypeIndex = coffeePlannerData.findIndex(
+      eachData => eachData.questionType === questionType,
+    )
+    return selectedOptions[questionTypeIndex]
   }
 
   showFinalPlan = () => {
-    const {drinkType, coffeeType, quantity, grindType, deliverType} = this.state
-    if (drinkType && coffeeType && quantity && grindType && deliverType) {
+    const {selectedOptions} = this.state
+    const isAllOptionsSelected =
+      selectedOptions.filter(eachOption => eachOption === '').length === 0
+
+    if (isAllOptionsSelected) {
       this.setState({successMessage: true, errorMessage: false})
     } else {
       this.setState({successMessage: false, errorMessage: true})
@@ -52,15 +46,8 @@ class CoffeePlanner extends Component {
 
   render() {
     const {coffeePlannerData} = this.props
-    const {
-      successMessage,
-      errorMessage,
-      drinkOptionType,
-      coffeeOptionType,
-      quantityOptionType,
-      grindOptionType,
-      deliverOptionType,
-    } = this.state
+    const {successMessage, errorMessage, selectedOptions} = this.state
+
     return (
       <div className="coffee-planner-bg-container">
         <div className="create-a-plan-bg-container">
@@ -73,18 +60,16 @@ class CoffeePlanner extends Component {
           </div>
         </div>
         <div className="coffee-planner-question-option-container">
-          {coffeePlannerData.map(eachCoffeePlannerData => (
-            <ul className="coffee-planner-each-question-option-container">
+          <ul className="coffee-planner-each-question-option-container">
+            {coffeePlannerData.map(eachCoffeePlannerData => (
               <CoffeePlannerQuestion
                 coffeePlannerQuestion={eachCoffeePlannerData}
                 key={eachCoffeePlannerData.id}
-              />
-              <QuestionOption
-                questionOption={eachCoffeePlannerData.optionsData}
                 selectedCategory={this.selectedCategory}
+                getSelectedOption={this.getSelectedOption}
               />
-            </ul>
-          ))}
+            ))}
+          </ul>
         </div>
         <button
           className="create-my-plan-button"
@@ -95,34 +80,34 @@ class CoffeePlanner extends Component {
         </button>
 
         {successMessage && (
-          <div className="coffee-planner-sucess-error-container">
+          <div className="coffee-planner-success-error-container">
             <p className="coffee-planner-final-message-text">
               I Drink my coffee as{' '}
               <span className="coffee-planner-selected-message-text">
-                {drinkOptionType}
+                {selectedOptions[0]}
               </span>
               , with a{' '}
               <span className="coffee-planner-selected-message-text">
-                {coffeeOptionType}
+                {selectedOptions[1]}
               </span>{' '}
               type of bean.{' '}
               <span className="coffee-planner-selected-message-text">
-                {quantityOptionType}
+                {selectedOptions[2]}
               </span>{' '}
               ground ala{' '}
               <span className="coffee-planner-selected-message-text">
-                {grindOptionType}
+                {selectedOptions[3]}
               </span>
               , sent to me{' '}
               <span className="coffee-planner-selected-message-text">
-                {deliverOptionType}
+                {selectedOptions[4]}
               </span>
               .
             </p>
           </div>
         )}
         {errorMessage && (
-          <div className="coffee-planner-sucess-error-container">
+          <div className="coffee-planner-success-error-container">
             <p className="coffee-planner-final-message-text">
               Kindly select options for all the questions.
             </p>
